@@ -1,5 +1,7 @@
-class LZW
+require 'dictionary'
 
+
+class LZW
   INITIAL_SIZE = 256
 
   def self.set_dictionary
@@ -8,8 +10,7 @@ class LZW
 
   # Compress a string to a list of output symbols.
   def self.compress(uncompressed)
-    dict_size = INITIAL_SIZE
-    dictionary = self.set_dictionary
+    dictionary = Dictionary.new
     w = ""
     result = []
     for c in uncompressed.split('')
@@ -17,16 +18,14 @@ class LZW
       if dictionary.has_key?(wc)
         w = wc
       else
-        result << dictionary[w]
-        # Add wc to the dictionary.
-        dictionary[wc] = dict_size
-        dict_size += 1
+        result << dictionary.find(w)
+        dictionary.push(wc)
         w = c
       end
     end
 
     # Output the code for w.
-    result << dictionary[w] unless w.empty?
+    result << dictionary.find(w) unless w.empty?
     result
   end
 
