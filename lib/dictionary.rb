@@ -27,4 +27,8 @@ class Dictionary
     @size += 1
     size_was
   end
+
+  def push_deco(w_plus_entry)
+    @dictionary[increase_size] = w_plus_entry
+  end
 end
